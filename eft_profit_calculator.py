@@ -116,6 +116,9 @@ def calculateReinvestment(data):
     data['unrealized_gains_include_reinvest'] = np.round(data['cum_holding_include_reinvest'] * data['daily_mean'])
     data['PE_ratio_include_reinvest'] = (data['unrealized_gains_include_reinvest'] / data['cun_cost_include_reinvest'] ) * 100
     
+    data['Dividend_profit_include_reinvest'] = np.round(data['Dividend_per_share'] * data['cum_holding_include_reinvest'])
+    data['cum_dividend_profit_include_reinvest'] =  data['Dividend_profit_include_reinvest'].cumsum()
+    
     return data
 
 def plotOHLCTicks(etf_code, ohlc_data):
@@ -291,6 +294,25 @@ def plotDividendsProfit(etf_code, dividends_data):
         ),
         secondary_y=True,
     )
+    
+    fig.add_trace(
+        go.Scatter(
+            x=dividends_data.index,
+            y=dividends_data.cum_dividend_profit_include_reinvest,
+            name='累計配息金額 (包含配息再投入)',
+        ),
+        secondary_y=False,
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=dividends_data.index,
+            y=dividends_data.cum_holding_include_reinvest,
+            name='累計持股數量 (包含配息再投入)',
+        ),
+        secondary_y=True,
+    )
+    
 
     fig.update_layout(
         title=f'{etf_code} 累計配息金額以及持股數量'
