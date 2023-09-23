@@ -111,10 +111,10 @@ def calculateReinvestment(data):
     data['cost_include_reinvest'] = data['cost'] + data['cost_reinvestment']
     
     data['cum_holding_include_reinvest'] = data['Holding_include_reinvest'].cumsum()
-    data['cun_cost_include_reinvest'] = data['cost_include_reinvest'].cumsum()
+    data['cum_cost_include_reinvest'] = data['cost_include_reinvest'].cumsum()
     
     data['unrealized_gains_include_reinvest'] = np.round(data['cum_holding_include_reinvest'] * data['daily_mean'])
-    data['PE_ratio_include_reinvest'] = (data['unrealized_gains_include_reinvest'] / data['cun_cost_include_reinvest'] ) * 100
+    data['PE_ratio_include_reinvest'] = (data['unrealized_gains_include_reinvest'] / data['cum_cost_include_reinvest'] ) * 100
     
     data['Dividend_profit_include_reinvest'] = np.round(data['Dividend_per_share'] * data['cum_holding_include_reinvest'])
     data['cum_dividend_profit_include_reinvest'] =  data['Dividend_profit_include_reinvest'].cumsum()
@@ -224,7 +224,7 @@ def plotUnrealizedProfit(etf_code, trading_data):
     fig.add_trace(
         go.Scatter(
             x=trading_data.index,
-            y=trading_data.cun_cost_include_reinvest,
+            y=trading_data.cum_cost_include_reinvest,
             name='累計投入成本 (包含配息再投入) (X)',
             legendgroup="left",  # this can be any string, not just "group"
             legendgrouptitle_text="左軸 (單位：台幣)",
@@ -381,8 +381,10 @@ def main():
         
         dividend_data = calculateDividendsProfit(trading_data, dividend_df_ohlc)
         
+        dividend_data = calculateReinvestment(dividend_data)
+        
         plotFuncList = [plotOHLCTicks, plotUnrealizedProfit, plotDividendsProfit]
-        plotMaterialsList = [ohlc_data, trading_data, dividend_data]
+        plotMaterialsList = [ohlc_data, dividend_data, dividend_data]
         for _tab, func, data in zip(st.tabs(["K線圖", "預估損益圖", "預估配息收益圖"]), plotFuncList, plotMaterialsList):
             with _tab:
                 _figure = func(etf_code, data)
