@@ -103,6 +103,21 @@ def calculateDividendsProfit(trading_data, dividend_data):
 
     return merged_data
 
+def calculateReinvestment(data):
+    data['Dividend_reinvestment_holding'] = np.floor(data['Dividend_profit'] / data['daily_mean'])
+    data['cost_reinvestment'] = np.round(data['Dividend_reinvestment_holding'] * data['daily_mean'])
+    
+    data['Holding_include_reinvest'] = data['holdings_per_trading_volume'] + data['Dividend_reinvestment_holding']
+    data['cost_include_reinvest'] = data['cost'] + data['cost_reinvestment']
+    
+    data['cum_holding_include_reinvest'] = data['Holding_include_reinvest'].cumsum()
+    data['cun_cost_include_reinvest'] = data['cost_include_reinvest'].cumsum()
+    
+    data['unrealized_gains_include_reinvest'] = np.round(data['cum_holding_include_reinvest'] * data['daily_mean'])
+    data['PE_ratio_include_reinvest'] = (data['unrealized_gains_include_reinvest'] / data['cun_cost_include_reinvest'] ) * 100
+    
+    return data
+
 def plotOHLCTicks(etf_code, ohlc_data):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
