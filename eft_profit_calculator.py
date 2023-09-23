@@ -217,6 +217,29 @@ def plotUnrealizedProfit(etf_code, trading_data):
         ),
         secondary_y=False,
     )
+    
+    fig.add_trace(
+        go.Scatter(
+            x=trading_data.index,
+            y=trading_data.cun_cost_include_reinvest,
+            name='累計投入成本 (包含配息再投入) (X)',
+            legendgroup="left",  # this can be any string, not just "group"
+            legendgrouptitle_text="左軸 (單位：台幣)",
+        ),
+        secondary_y=False,
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=trading_data.index,
+            y=trading_data.unrealized_gains_include_reinvest,
+            name='持股現值 (包含配息再投入) (Y)',
+            legendgroup="left",  # this can be any string, not just "group"
+            legendgrouptitle_text="左軸 (單位：台幣)",
+        ),
+        secondary_y=False,
+    )
+    
     fig.add_trace(
             go.Scatter(
                 x=trading_data.index,
@@ -227,7 +250,18 @@ def plotUnrealizedProfit(etf_code, trading_data):
             ),
             secondary_y=True,
         )
-        
+    
+    fig.add_trace(
+            go.Scatter(
+                x=trading_data.index,
+                y=trading_data.PE_ratio_include_reinvest,
+                name='未實現損益比 (Y/X)',
+                legendgroup="right",  # this can be any string, not just "group"
+                legendgrouptitle_text="右軸 (100%)",
+            ),
+            secondary_y=True,
+        )
+    
     fig.update_layout(
         title=f'{etf_code} 定期定額收益計算'
     )
