@@ -121,7 +121,6 @@ def calculateReinvestment(data):
 def plotOHLCTicks(etf_code, ohlc_data):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-
     fig.add_trace(
         go.Ohlc(
             x=ohlc_data.index,
@@ -201,7 +200,7 @@ def plotUnrealizedProfit(etf_code, trading_data):
         go.Scatter(
             x=trading_data.index,
             y=trading_data.cum_cost,
-            name='累計成本 (A)',
+            name='累計投入成本 (A)',
             legendgroup="left",  # this can be any string, not just "group"
             legendgrouptitle_text="左軸 (單位：台幣)",
         ),
