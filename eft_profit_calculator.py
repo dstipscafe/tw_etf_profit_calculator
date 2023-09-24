@@ -104,6 +104,15 @@ def calculateDividendsProfit(trading_data, dividend_data):
     return merged_data
 
 def calculateReinvestment(data):
+    
+    data['cum_holdings'] = data['holdings_per_trading_volume'].cumsum()
+    data['cum_cost'] = data['cost'].cumsum()
+    
+    data['unrealized_gains'] = np.round(data['cum_holdings'] * data['daily_mean']) 
+    
+    data['PE_ratio'] = (data['unrealized_gains'] / data['cum_cost'] ) * 100
+    
+
     data['Dividend_reinvestment_holding'] = np.floor(data['Dividend_profit'] / data['daily_mean'])
     data['cost_reinvestment'] = np.round(data['Dividend_reinvestment_holding'] * data['daily_mean'])
     
