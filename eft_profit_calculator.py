@@ -247,7 +247,7 @@ def plotUnrealizedProfit(etf_code, trading_data):
             go.Scatter(
                 x=trading_data.index,
                 y=trading_data.PE_ratio,
-                name='未實現損益比 B/A',
+                name='未實現損益比 (B/A)',
                 legendgroup="right",  # this can be any string, not just "group"
                 legendgrouptitle_text="右軸 (100%)",
             ),
