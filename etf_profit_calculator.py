@@ -1,5 +1,6 @@
 import json
 import requests
+import datetime
 
 import numpy as np
 import pandas as pd
@@ -351,11 +352,22 @@ def main():
         
         col11, col12 = st.columns(2)
         
+        mindate = datetime.date(2000, 1, 1)
+        maxdate = datetime.datetime.now()
+        
         with col11:
-            start_date = st.date_input("請選擇起始時間：")
+            start_date = st.date_input(
+                "請選擇起始時間：", 
+                min_value=mindate,
+                max_value=maxdate,
+            )
         
         with col12:
-            end_date = st.date_input("請選擇結束時間：")
+            end_date = st.date_input(
+                "請選擇結束時間：",
+                min_value=mindate,
+                max_value=maxdate,
+            )
         
         col21, col22 = st.columns(2)
         
