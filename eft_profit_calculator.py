@@ -112,7 +112,6 @@ def calculateReinvestment(data):
     
     data['PE_ratio'] = (data['unrealized_gains'] / data['cum_cost'] ) * 100
     
-
     data['Dividend_reinvestment_holding'] = np.floor(data['Dividend_profit'] / data['daily_mean'])
     data['cost_reinvestment'] = np.round(data['Dividend_reinvestment_holding'] * data['daily_mean'])
     
@@ -291,6 +290,8 @@ def plotDividendsProfit(etf_code, dividends_data):
             x=dividends_data.index,
             y=dividends_data.cum_dividend_profit,
             name='累計配息金額',
+            legendgroup="left",  # this can be any string, not just "group"
+            legendgrouptitle_text="左軸 (單位：台幣)",
         ),
         secondary_y=False,
     )
@@ -300,6 +301,8 @@ def plotDividendsProfit(etf_code, dividends_data):
             x=dividends_data.index,
             y=dividends_data.cum_holdings,
             name='累計持股數量',
+            legendgroup="right",  # this can be any string, not just "group"
+            legendgrouptitle_text="右軸 (單位：股)",
         ),
         secondary_y=True,
     )
@@ -309,6 +312,8 @@ def plotDividendsProfit(etf_code, dividends_data):
             x=dividends_data.index,
             y=dividends_data.cum_dividend_profit_include_reinvest,
             name='累計配息金額 (包含配息再投入)',
+            legendgroup="left",  # this can be any string, not just "group"
+            legendgrouptitle_text="左軸 (單位：台幣)",
         ),
         secondary_y=False,
     )
@@ -318,6 +323,8 @@ def plotDividendsProfit(etf_code, dividends_data):
             x=dividends_data.index,
             y=dividends_data.cum_holding_include_reinvest,
             name='累計持股數量 (包含配息再投入)',
+            legendgroup="right",  # this can be any string, not just "group"
+            legendgrouptitle_text="右軸 (單位：股)",
         ),
         secondary_y=True,
     )
